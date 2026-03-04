@@ -1,7 +1,7 @@
 package com.umakant.learnaiollama.controller;
 
+import com.umakant.learnaiollama.service.ChatService;
 import org.springframework.ai.chat.client.ChatClient;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,14 +12,18 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping
 public class ChatController {
 
-    private ChatClient chatClient;
-    public ChatController(ChatClient.Builder chatClient){
-        this.chatClient = chatClient.build();
+    private final ChatClient ollamaChatClient;
+    private final ChatService chatService;
+
+    public ChatController(ChatClient ollamaChatClient, ChatService chatService) {
+        this.ollamaChatClient = ollamaChatClient;
+        this.chatService = chatService;
     }
 
     @GetMapping("/chat")
     public ResponseEntity<String> chat(@RequestParam(value = "q") String query){
-        String responseContent = chatClient.prompt(query).call().content();
-        return ResponseEntity.ok(responseContent);
+        String responseContent = ollamaChatClient.prompt(query).call().content();
+        String chatResponse = chatService.chat(query);
+        return ResponseEntity.ok(chatResponse);
     }
 }
