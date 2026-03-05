@@ -11,9 +11,9 @@ public class AiConfig {
     @Bean(name = "ollamaChatClient")
     public ChatClient ollamaChatModel(OllamaChatModel ollamaChatModel){
         return ChatClient.builder(ollamaChatModel)
-                .defaultSystem("You are a cricket expert")
                 .defaultOptions(OllamaChatOptions.builder()
-                        .temperature(0.2)
+                        .format("json")
+                        .temperature(0.8)
                         .build())
                 .build();
     }

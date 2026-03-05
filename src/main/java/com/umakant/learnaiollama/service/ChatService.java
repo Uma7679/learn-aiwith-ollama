@@ -8,4 +8,8 @@ public interface ChatService {
     Tut chat(String query);
 
     List<Tut> chatList(String query);
+
+    public String chatTemplate();
+
+    public String systemChatTemplate();
 }
