@@ -29,4 +29,11 @@ class LearnaiollamaApplicationTests {
         System.out.println(output);
     }
 
+    @Test
+    void testpromptFileTemplate(){
+        System.out.println("Prompt File Template");
+        var output = chatService.promptFileTemplate();
+        System.out.println(output);
+    }
+
 }

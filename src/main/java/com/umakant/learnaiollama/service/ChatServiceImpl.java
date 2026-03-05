@@ -6,7 +6,9 @@ import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.chat.prompt.PromptTemplate;
 import org.springframework.ai.chat.prompt.SystemPromptTemplate;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,6 +17,10 @@ import java.util.Map;
 @Service
 public class ChatServiceImpl implements ChatService {
     private final ChatClient chatClient;
+
+    @Value("classpath:/prompts/user-message.st")
+    private Resource userMessage;
+
     public ChatServiceImpl(ChatClient chatClient) {
         this.chatClient = chatClient;
     }
@@ -86,5 +92,15 @@ public class ChatServiceImpl implements ChatService {
         Prompt prompt = new Prompt(systemMessage, userMessage);
 
         return chatClient.prompt(prompt).call().content();
+    }
+
+    public String promptFileTemplate(){
+        return chatClient.prompt()
+                .system(
+                        system -> system
+                                .text("You are a helpful coding assistant. You are an expert in coding."))
+                .user(user -> user.text(userMessage).param("concept", "Spring framework validation"))
+                .call()
+                .content();
     }
 }

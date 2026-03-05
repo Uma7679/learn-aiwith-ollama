@@ -12,4 +12,6 @@ public interface ChatService {
     public String chatTemplate();
 
     public String systemChatTemplate();
+
+    public String promptFileTemplate();
 }
