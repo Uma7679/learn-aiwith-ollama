@@ -3,6 +3,7 @@ package com.umakant.learnaiollama.service;
 
 import com.umakant.learnaiollama.entity.Tut;
 import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.chat.prompt.PromptTemplate;
 import org.springframework.ai.chat.prompt.SystemPromptTemplate;
@@ -115,6 +116,26 @@ public class ChatServiceImpl implements ChatService {
                 .system(system -> system.text(this.systemMessage))
                 .user(user -> user.text(this.userMessage).param("concept", query))
                 .stream()
+                .content();
+    }
+
+    public String inMemoryChat(String query) {
+        return chatClient
+                .prompt()
+                .system(system -> system.text(this.systemMessage))
+                .user(user -> user.text(this.userMessage).param("concept", query))
+                .call()
+                .content();
+    }
+
+    @Override
+    public String chatWithUserId(String query, String userId) {
+        return chatClient
+                .prompt()
+                .advisors(advisorSpec -> advisorSpec.param(ChatMemory.CONVERSATION_ID, userId))
+                .system(system -> system.text(this.systemMessage))
+                .user(user -> user.text(this.userMessage).param("concept", query))
+                .call()
                 .content();
     }
 }

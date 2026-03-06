@@ -17,4 +17,8 @@ public interface ChatService {
     public String promptFileTemplate();
 
     Flux<String> streamChat(String query);
+
+    public String inMemoryChat(String query);
+
+    public String chatWithUserId(String query, String userId);
 }
