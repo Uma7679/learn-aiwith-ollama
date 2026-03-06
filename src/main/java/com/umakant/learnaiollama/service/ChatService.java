@@ -1,6 +1,7 @@
 package com.umakant.learnaiollama.service;
 
 import com.umakant.learnaiollama.entity.Tut;
+import reactor.core.publisher.Flux;
 
 import java.util.List;
 
@@ -14,4 +15,6 @@ public interface ChatService {
     public String systemChatTemplate();
 
     public String promptFileTemplate();
+
+    Flux<String> streamChat(String query);
 }

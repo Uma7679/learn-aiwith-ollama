@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Flux;
 
 import java.util.List;
 import java.util.Map;
@@ -20,6 +21,9 @@ public class ChatServiceImpl implements ChatService {
 
     @Value("classpath:/prompts/user-message.st")
     private Resource userMessage;
+
+    @Value("classpath:/prompts/system-message.st")
+    private Resource systemMessage;
 
     public ChatServiceImpl(ChatClient chatClient) {
         this.chatClient = chatClient;
@@ -101,6 +105,16 @@ public class ChatServiceImpl implements ChatService {
                                 .text("You are a helpful coding assistant. You are an expert in coding."))
                 .user(user -> user.text(userMessage).param("concept", "Spring framework validation"))
                 .call()
+                .content();
+    }
+
+    @Override
+    public Flux<String> streamChat(String query) {
+        return chatClient
+                .prompt()
+                .system(system -> system.text(this.systemMessage))
+                .user(user -> user.text(this.userMessage).param("concept", query))
+                .stream()
                 .content();
     }
 }
