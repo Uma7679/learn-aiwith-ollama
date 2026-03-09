@@ -1,5 +1,6 @@
 package com.umakant.learnaiollama;
 
+import com.umakant.learnaiollama.helper.Helper;
 import com.umakant.learnaiollama.service.ChatService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,13 @@ class LearnaiollamaApplicationTests {
         System.out.println("Prompt File Template");
         var output = chatService.promptFileTemplate();
         System.out.println(output);
+    }
+
+    @Test
+    void saveDataToVectorDatabase(){
+        System.out.println("Save Data To Vector Database");
+        chatService.saveData(Helper.getData());
+        System.out.println("Saved Data To Vector Database");
     }
 
 }

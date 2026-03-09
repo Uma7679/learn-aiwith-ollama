@@ -21,4 +21,6 @@ public interface ChatService {
     public String inMemoryChat(String query);
 
     public String chatWithUserId(String query, String userId);
+
+    void saveData(List<String> list);
 }
